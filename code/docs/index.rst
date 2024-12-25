@@ -6,7 +6,13 @@
 Covert Channel documentation
 ============================
 
-Please add your names, group ID, and your link to the forked public repository here by editing `index.rst` in the docs folder.
+Ozan Yanık 2581163
+
+Fatih Emre Güneş 2580603
+
+Group ID: 28 
+
+Github Link: https://github.com/Microwave64/covertovert.git
 
 
 .. toctree::
