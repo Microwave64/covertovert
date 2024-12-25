@@ -1,5 +1,5 @@
 from CovertChannelBase import CovertChannelBase
-from scapy.all import IP, Raw, sniff, TCP, UDP
+from scapy.all import Ether, IP, Raw, sniff, TCP, UDP
 import time
 
 class MyCovertChannel(CovertChannelBase):
@@ -12,19 +12,19 @@ class MyCovertChannel(CovertChannelBase):
         - You can edit __init__.
         """
         pass
-    def send(self, log_file_name, interval:int, error: int, msg_min_length:int, msg_max_length:int):
+    def send(self, log_file_name, interval:int, msg_min_length:int, msg_max_length:int):
         msg = super().generate_random_message(min_length=msg_min_length, max_length=msg_max_length)
         bin_msg = super().convert_string_message_to_binary(msg)
-        super().log_message(msg[:-1], log_file_name)
-        packet = IP(dst="172.18.0.3", src="172.18.0.2")
-        super().send(packet)
-        print(msg[:-1])
+        print(msg)
+        print(bin_msg)
+        super().log_message(msg, log_file_name)
+        packet = Ether(dst="02:42:ac:12:00:03",src="02:42:ac:12:00:02")/IP(dst="172.18.0.3", src="172.18.0.2")/UDP(dport=12345, sport=12345)/Raw(load=msg)
         for bit in bin_msg:
             if bit == '0':
-                super().sleep_random_time_ms(start=0, end=interval-error)
+                super().sleep_random_time_ms(start=0, end=interval)
                 super().send(packet)
             elif bit == '1':
-                super().sleep_random_time_ms(start=interval+error, end=2*interval)
+                super().sleep_random_time_ms(start=interval, end=2*interval)
                 super().send(packet)
                 
 
@@ -32,15 +32,14 @@ class MyCovertChannel(CovertChannelBase):
     def receive(self, interval: int, log_file_name: str):
         buffer = ""
         msg = ""
-        flag = False
-        sniff(filter="host 172.18.0.2 and ip", count = 1)
         time_1 = time.time() * 1000  # Convert to milliseconds
+
         def process_packet(packet):
-            nonlocal buffer, msg, time_1, flag
+            nonlocal buffer, msg, time_1
             time_2 = time.time() * 1000  # Convert to milliseconds
             inter = time_2 - time_1
             time_1 = time_2
-            # print(f"Interval: {inter}")
+            print(f"Interval: {inter}")
 
             if inter < interval:
                 buffer += '0'
@@ -50,24 +49,18 @@ class MyCovertChannel(CovertChannelBase):
             if len(buffer) == 8:
                 new_char = self.convert_eight_bits_to_character(buffer)
                 print(f"Decoded char: {new_char}")
-                # print(f"Buffer: {buffer}")
+                print(f"Buffer: {buffer}")
 
-                if new_char == '.':
-                    print("FUNCTION STOPP !!!!!!!!!!!!!!!!")
-                    print(msg)
+                if new_char == ".":
                     self.log_message(msg, log_file_name)
-                    flag = True
+                    return True
                 else:
                     msg += new_char
                     buffer = ""
-                    flag = False
-            if not flag:
-                flag = False
-        def stopper(packet):
-            nonlocal flag
-            return flag
 
-        sniff(filter="host 172.18.0.2 and ip and not icmp", prn=process_packet, stop_filter=stopper)
+            return False  
+
+        sniff(filter="ip and dst host 172.18.0.3", prn=process_packet, stop_filter=process_packet)
 
 
 

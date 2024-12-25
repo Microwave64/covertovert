@@ -1,18 +1,18 @@
 {
-  "covert_channel_code": "Replace it with the [Code] of chosen covert channel type seen in ODTUClass.",
+  "covert_channel_code": "CTC-PIT-IP",
   "send": {
     "parameters": {
-      "parameter1": "p1",
-      "parameter2": 1234,
-      "log_file_name": "Example_UDPTimingInterarrivalChannelSender.log"
+      "log_file_name": "IP_InterArrival_Sent_Msg.log",
+      "interval": 200,
+      "error": 60,
+      "msg_min_length": 20,
+      "msg_max_length": 30
     }
   },
   "receive": {
     "parameters": {
-      "parameter1": "p1",
-      "parameter2": 1234,
-      "parameter3": "p3",
-      "log_file_name": "Example_UDPTimingInterarrivalChannelReceiver.log"
+      "interval": 200,
+      "log_file_name": "IP_InterArrival_Received_Msg.log"
     }
   }
 }
