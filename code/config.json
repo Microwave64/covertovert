@@ -3,15 +3,15 @@
   "send": {
     "parameters": {
       "log_file_name": "IP_InterArrival_Sent_Msg.log",
-      "interval": 120,
-      "error": 60,
+      "interval": 150,
+      "error": 70,
       "msg_min_length": 16,
       "msg_max_length": 16
     }
   },
   "receive": {
     "parameters": {
-      "interval": 120,
+      "interval": 150,
       "log_file_name": "IP_InterArrival_Received_Msg.log"
     }
   }

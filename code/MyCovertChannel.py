@@ -20,6 +20,7 @@ class MyCovertChannel(CovertChannelBase):
             As we have discussed in the recitation Ether() is not necessary, so we neglect it to not yield any warning
             This is first message which is used as initial point in time calculations
         """
+        a = time.time()
         packet = IP(dst="172.18.0.3", src="172.18.0.2")
         super().send(packet)  # (1*) --> represents first packet
 
@@ -27,7 +28,7 @@ class MyCovertChannel(CovertChannelBase):
             In order to covert secret message, each bit is encoded by random delay in certain interval.
             Additionally, the error parameter is required, due to propogation delay fluctuating the recieving time.
             The error is used to cancel the effect of unwanted time fluctuations due to propogation delay
-            In our calculation we initially assumed that: interval = 120 ms, error = 60
+            In our calculation we initially assumed that: interval = 150 ms, error = 70
         """
         for bit in bin_msg:
             if bit == '0':
@@ -38,7 +39,7 @@ class MyCovertChannel(CovertChannelBase):
                 # Message intentionaly delayed in slept interval below encodes 1
                 super().sleep_random_time_ms(start=interval+error, end=2*interval)
                 super().send(packet)
-
+        print("Time elapsed: ", 128/(time.time() - a))
 
 
     def receive(self, interval: int, log_file_name: str):

@@ -8,7 +8,7 @@ Covert channels utilize steganographic techniques to facilitate communication. U
 
 ## Constraints
 
-For the covert channel to work properly, the minimum value for the *interval* is 120 and the minimum value for *error* is 60 in this case. They can be increased but *error* should be adjusted proportional to *interval*. *error* should not be small than the limit so that the channel is not affected by the propagation and processing delay.
+For the covert channel to work properly, the minimum value for the *interval* is 150 and the minimum value for *error* is 70 in this case. They can be increased but *error* should be adjusted proportional to *interval*. *error* should not be small than the limit so that the channel is not affected by the propagation and processing delay.
 
 ## Detailed Operational Overview
 
@@ -30,4 +30,4 @@ First of all, the current time is measured and stored in the **time_2** variable
 
 ## Channel Capacity
 
-We have tested the capacity of the covert channel multiple times with strings having 16 characters. The maximum channel capacity we got is 7.35466606171295 bits/second and the mininum is 6.108697769781235 bits/second.
+We have tested the capacity of the covert channel multiple times with strings having 16 characters. The maximum channel capacity we got is 6.48 bits/second and the mininum is 5.88949 bits/second.
